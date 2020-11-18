@@ -42,7 +42,7 @@ describe("GildedRose shop manager", function () {
     });
   });
 
-  it("Augmente par 3 la qualité quand il reste 5 jours ou moins pour Backstage passes", function () {
+  it("Augmente de 3 la qualité quand il reste 5 jours ou moins pour Backstage passes", function () {
     listItems.push(new Item("Aged Brie", 5, 45));
     listItems.push(new Item("Backstage passes to a TAFKAL80ETC concert", 5, 45));
 
@@ -147,13 +147,29 @@ describe("GildedRose shop manager", function () {
   });
 
   it("retourne un tableau vide si aucun item de passé", function () {
-    
     const gildedRose = new Shop();
     const results = gildedRose.updateQuality();
 
       expect(results).toBeInstanceOf(Array);
       expect(results).toHaveSize(0);
       
+  });
+
+  it("Baisse de 2 la qualité de Conjured", function () {
+    listItems.push(new Item("Conjured Applepie", 10, 20));
+    listItems.push(new Item("Conjured Banana", 3, 6));
+
+    const gildedRose = new Shop(listItems);
+    const results = gildedRose.updateQuality();
+
+    const  expected = [
+      { sellIn: 9, quality: 18 },
+      { sellIn: 2, quality: 4 }
+    ];
+    expected.forEach(function (testCase, index) {
+      expect(results[index].quality).toBe(testCase.quality);
+      expect(results[index].sellIn).toBe(testCase.sellIn);
+    });
   });
   
 });
